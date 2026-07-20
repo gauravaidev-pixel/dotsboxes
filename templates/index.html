@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Dots &amp; Boxes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <div id="toastHost" class="toast-host"></div>
+
+  <!-- ============ LOBBY ============ -->
+  <main id="lobbyScreen" class="screen lobby-screen">
+    <div class="brand">
+      <svg class="brand-mark" width="46" height="46" viewBox="0 0 46 46" fill="none">
+        <circle cx="8" cy="8" r="4" fill="#2193B0"/>
+        <circle cx="23" cy="8" r="4" fill="#2193B0"/>
+        <circle cx="38" cy="8" r="4" fill="#2193B0"/>
+        <circle cx="8" cy="23" r="4" fill="#FF416C"/>
+        <circle cx="23" cy="23" r="4" fill="#2193B0"/>
+        <circle cx="38" cy="23" r="4" fill="#FF416C"/>
+        <circle cx="8" cy="38" r="4" fill="#FF416C"/>
+        <circle cx="23" cy="38" r="4" fill="#2193B0"/>
+        <circle cx="38" cy="38" r="4" fill="#FF416C"/>
+        <line x1="8" y1="8" x2="23" y2="8" stroke="#2193B0" stroke-width="3"/>
+        <line x1="8" y1="23" x2="8" y2="38" stroke="#FF416C" stroke-width="3"/>
+        <line x1="23" y1="23" x2="38" y2="23" stroke="#2193B0" stroke-width="3"/>
+      </svg>
+      <div>
+        <h1>Dots &amp; Boxes</h1>
+        <p class="tagline">The classic pen-and-paper game, now online.</p>
+      </div>
+    </div>
+
+    <div class="lobby-card">
+      <label class="field-label" for="playerName">Your name</label>
+      <input id="playerName" class="text-field" type="text" maxlength="14" placeholder="e.g. Alex" autocomplete="off">
+
+      <div class="lobby-tabs">
+        <button class="tab-btn active" data-tab="online">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c2.5 2.5 4 5.7 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.7-4-9s1.5-6.5 4-9z" stroke="currentColor" stroke-width="1.8"/></svg>
+          Online Room
+        </button>
+        <button class="tab-btn" data-tab="local">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="2.5" stroke="currentColor" stroke-width="1.8"/><line x1="10" y1="18.5" x2="14" y2="18.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Same Device
+        </button>
+      </div>
+
+      <!-- Online tab -->
+      <div class="tab-panel" id="tab-online">
+        <div class="panel-block">
+          <h3>Create a room</h3>
+
+          <span class="field-label">Your color</span>
+          <div class="swatch-row" id="colorPickerCreate">
+            <button class="swatch active" data-color="#FF416C" style="--sw:#FF416C" aria-label="Pink"></button>
+            <button class="swatch" data-color="#2193B0" style="--sw:#2193B0" aria-label="Teal"></button>
+            <button class="swatch" data-color="#27AE60" style="--sw:#27AE60" aria-label="Green"></button>
+            <button class="swatch" data-color="#F4B400" style="--sw:#F4B400" aria-label="Yellow"></button>
+          </div>
+
+          <div class="field-row">
+            <label class="field-label" for="boardSizeCreate">Board size</label>
+            <select id="boardSizeCreate" class="select-field">
+              <option value="4">4 × 4</option>
+              <option value="5">5 × 5</option>
+              <option value="6" selected>6 × 6</option>
+              <option value="7">7 × 7</option>
+              <option value="8">8 × 8</option>
+            </select>
+          </div>
+          <button id="createRoomBtn" class="primary-btn">Create Room</button>
+        </div>
+
+        <div class="divider"><span>or</span></div>
+
+        <div class="panel-block">
+          <h3>Join a room</h3>
+
+          <span class="field-label">Your color</span>
+          <div class="swatch-row" id="colorPickerJoin">
+            <button class="swatch" data-color="#FF416C" style="--sw:#FF416C" aria-label="Pink"></button>
+            <button class="swatch active" data-color="#2193B0" style="--sw:#2193B0" aria-label="Teal"></button>
+            <button class="swatch" data-color="#27AE60" style="--sw:#27AE60" aria-label="Green"></button>
+            <button class="swatch" data-color="#F4B400" style="--sw:#F4B400" aria-label="Yellow"></button>
+          </div>
+
+          <div class="field-row">
+            <input id="joinCodeInput" class="text-field code-input" type="text" maxlength="5" placeholder="ROOM CODE">
+          </div>
+          <button id="joinRoomBtn" class="primary-btn primary-btn--blue">Join Room</button>
+          <p id="joinError" class="error-text"></p>
+        </div>
+      </div>
+
+      <!-- Local tab -->
+      <div class="tab-panel hidden" id="tab-local">
+        <div class="field-row">
+          <span class="field-label">Your color</span>
+          <div class="swatch-row" id="colorPickerLocalS">
+            <button class="swatch active" data-color="#FF416C" style="--sw:#FF416C" aria-label="Pink"></button>
+            <button class="swatch" data-color="#2193B0" style="--sw:#2193B0" aria-label="Teal"></button>
+            <button class="swatch" data-color="#27AE60" style="--sw:#27AE60" aria-label="Green"></button>
+            <button class="swatch" data-color="#F4B400" style="--sw:#F4B400" aria-label="Yellow"></button>
+          </div>
+        </div>
+
+        <div class="field-row" id="nameGRow">
+          <label class="field-label" for="nameG_local">Player 2's name</label>
+          <input id="nameG_local" class="text-field" type="text" maxlength="14" placeholder="Player 2" autocomplete="off">
+        </div>
+
+        <div class="field-row" id="colorGRow">
+          <span class="field-label">Player 2's color</span>
+          <div class="swatch-row" id="colorPickerLocalG">
+            <button class="swatch" data-color="#FF416C" style="--sw:#FF416C" aria-label="Pink"></button>
+            <button class="swatch active" data-color="#2193B0" style="--sw:#2193B0" aria-label="Teal"></button>
+            <button class="swatch" data-color="#27AE60" style="--sw:#27AE60" aria-label="Green"></button>
+            <button class="swatch" data-color="#F4B400" style="--sw:#F4B400" aria-label="Yellow"></button>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <label class="field-label" for="boardSizeLocal">Board size</label>
+          <select id="boardSizeLocal" class="select-field">
+            <option value="4">4 × 4</option>
+            <option value="5">5 × 5</option>
+            <option value="6" selected>6 × 6</option>
+            <option value="7">7 × 7</option>
+            <option value="8">8 × 8</option>
+          </select>
+        </div>
+
+        <label class="check-row">
+          <input type="checkbox" id="vsAiCheck">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="8" width="16" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="14" r="1.4" fill="currentColor"/><circle cx="15" cy="14" r="1.4" fill="currentColor"/><path d="M12 8V4M9 4h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span>Let the computer play as Player 2</span>
+        </label>
+        <div class="field-row hidden" id="aiDiffRow">
+          <label class="field-label" for="aiDifficulty">Computer level</label>
+          <select id="aiDifficulty" class="select-field">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <button id="startLocalBtn" class="primary-btn">Start Game</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============ WAITING ROOM ============ -->
+  <main id="waitScreen" class="screen wait-screen hidden">
+    <div class="wait-card">
+      <div class="spinner" aria-hidden="true"></div>
+      <h2>Waiting for opponent…</h2>
+      <p>Share this code with your friend:</p>
+      <button id="roomCodeBtn" class="room-code-chip" title="Tap to copy">
+        <span id="roomCodeText">-----</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 9V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-4M9 9H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4M9 9h6v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <p class="copy-hint">tap to copy</p>
+      <button id="cancelWaitBtn" class="ghost-btn">Cancel</button>
+    </div>
+  </main>
+
+  <!-- ============ GAME SCREEN ============ -->
+  <main id="gameScreen" class="screen game-screen hidden">
+    <header class="game-topbar">
+      <button id="backBtn" class="icon-btn" title="Go back" aria-label="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="conn-status" id="connStatus">
+        <span class="conn-dot" id="connDot"></span>
+        <span id="connText">Connected</span>
+      </div>
+      <div class="mode-chip" id="modeChip">Local</div>
+    </header>
+
+    <div id="statusBanner" class="status-banner hidden">
+      <svg class="status-banner__spinner" width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="40" stroke-dashoffset="10"/></svg>
+      <span id="statusBannerText"></span>
+    </div>
+
+    <div class="scorebar">
+      <div class="score-pill score-pill--s" id="scoreS">
+        <span class="score-dot"></span>
+        <span class="score-name" id="nameSLabel">Player 1</span>
+        <span class="score-num" id="scoreSNum">0</span>
+      </div>
+      <div class="turn-indicator" id="turnIndicator">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="score-pill score-pill--g" id="scoreG">
+        <span class="score-num" id="scoreGNum">0</span>
+        <span class="score-name" id="nameGLabel">Player 2</span>
+        <span class="score-dot"></span>
+      </div>
+    </div>
+
+    <div class="board-wrap">
+      <svg id="board" class="board-svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <div class="game-controls">
+      <button id="undoBtn" class="pill-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 14l-5-5 5-5M4 9h10a6 6 0 0 1 0 12h-2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Undo
+      </button>
+      <button id="newLocalBtn" class="pill-btn hidden">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 0 1 14.5-4.7M20 12a8 8 0 0 1-14.5 4.7" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M18.5 3v4.5H14M5.5 21v-4.5H10" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        New Game
+      </button>
+      <button id="musicToggleBtn" class="pill-btn hidden">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span id="musicToggleLabel">Play Music</span>
+      </button>
+      <button id="voiceToggleBtn" class="pill-btn hidden">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="12" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M9 22h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="voiceToggleLabel">Voice Chat</span>
+      </button>
+      <button id="muteToggleBtn" class="pill-btn hidden">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 3l18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 9v3a3 3 0 0 0 4.6 2.5M15 9V5a3 3 0 0 0-5.7-1.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 11a7 7 0 0 0 10.6 6M19 11a7 7 0 0 1-1 3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 18v4M9 22h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="muteToggleLabel">Mute</span>
+      </button>
+      <button id="leaveOnlineBtn" class="pill-btn hidden">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Leave Room
+      </button>
+    </div>
+  </main>
+
+  <audio id="remoteAudio" autoplay playsinline class="hidden"></audio>
+
+  <!-- ============ WINNER MODAL ============ -->
+  <div id="winnerOverlay" class="modal-overlay hidden">
+    <div class="modal-card">
+      <svg class="trophy-icon" width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v3a5 5 0 0 1-10 0V4z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 5H4a1 1 0 0 0-1 1c0 3 2 5 4.5 5.3M17 5h3a1 1 0 0 1 1 1c0 3-2 5-4.5 5.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <h2 id="winnerTitle">Game Over</h2>
+      <div class="winner-stats" id="winnerStats"></div>
+      <button id="winnerCloseBtn" class="primary-btn">Continue</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="{{ url_for('static', filename='js/music.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+        </html>
