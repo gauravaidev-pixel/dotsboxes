@@ -44,8 +44,7 @@ app.py                 → Flask + SocketIO backend, all game logic/validation
 templates/index.html   → Lobby, waiting room, game screen, winner modal
 static/css/style.css   → All UI styling
 static/js/main.js      → SVG board renderer, local AI, Socket.IO client
-static/audio/          → Background music track (lofi_night_loop.mp3)
-tools/make_track.py    → Generator script for that track (numpy synth)
+static/audio/          → Background music track (death_bed.mp3)
 requirements.txt       → Dependencies
 Procfile                → Render start command
 ```
@@ -65,11 +64,8 @@ Procfile                → Render start command
   both sides (mic only turns on when you tap "Voice Chat"), with a
   mute/unmute toggle once connected
 - **Background music** for local games against the computer — the bundled
-  lo-fi instrumental `static/audio/lofi_night_loop.mp3` (1:38, seamless
-  loop) plays with a soft fade in/out, behind its own play/stop button. The
-  track is synthesized from scratch (no samples, nothing to license), and
-  the generator lives in `tools/make_track.py` if you want to tweak or
-  rebuild it
+  track `static/audio/death_bed.mp3` (2:53) plays on a loop with a soft
+  fade in/out, behind its own play/stop button
 
 ### Note on voice chat
 
