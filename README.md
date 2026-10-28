@@ -44,6 +44,7 @@ app.py                 → Flask + SocketIO backend, all game logic/validation
 templates/index.html   → Lobby, waiting room, game screen, winner modal
 static/css/style.css   → All UI styling
 static/js/main.js      → SVG board renderer, local AI, Socket.IO client
+static/audio/          → Background music track (notes_from_the_window_sill.mp3)
 requirements.txt       → Dependencies
 Procfile                → Render start command
 ```
@@ -62,9 +63,9 @@ Procfile                → Render start command
 - **Voice chat** for online rooms — peer-to-peer WebRTC audio, opt-in on
   both sides (mic only turns on when you tap "Voice Chat"), with a
   mute/unmute toggle once connected
-- **Background music** for local games against the computer — a small
-  ambient loop generated entirely in the browser via the Web Audio API
-  (no audio files, so nothing to license), with its own play/stop button
+- **Background music** for local games against the computer — the bundled
+  track `static/audio/notes_from_the_window_sill.mp3` (2:57) plays on a loop
+  with a soft fade in/out, behind its own play/stop button
 
 ### Note on voice chat
 
