@@ -1,7 +1,7 @@
 /**
  * MusicEngine — background music for local games against the computer.
  *
- * Plays the bundled track `static/audio/notes_from_the_window_sill.mp3`
+ * Plays the bundled track `static/audio/lofi_night_loop.mp3`
  * on a loop through a single HTMLAudioElement, with a short fade in and
  * fade out so starting/stopping never clicks. The public API is the same
  * as before (play / stop / isPlaying), so nothing in main.js has to change.
@@ -9,7 +9,7 @@
  * Usage: MusicEngine.play() / MusicEngine.stop() / MusicEngine.isPlaying()
  */
 window.MusicEngine = (function () {
-  const TRACK_URL = '/static/audio/notes_from_the_window_sill.mp3';
+  const TRACK_URL = '/static/audio/lofi_night_loop.mp3';
   const TARGET_VOLUME = 0.55;
   const FADE_IN_MS = 1200;
   const FADE_OUT_MS = 600;
